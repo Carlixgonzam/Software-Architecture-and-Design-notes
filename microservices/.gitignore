@@ -11,8 +11,5 @@
 *.bbl
 *.blg
 
-# Output (solo ignorar si no quieres versionar el PDF)
-# *.pdf
-
 # macOS
 .DS_Store
