@@ -1,0 +1,18 @@
+# LaTeX auxiliary files
+*.aux
+*.log
+*.synctex.gz
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.bbl
+*.blg
+
+# Output (solo ignorar si no quieres versionar el PDF)
+# *.pdf
+
+# macOS
+.DS_Store

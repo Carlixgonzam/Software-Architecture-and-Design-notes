@@ -1,0 +1,41 @@
+% !TEX root = main.tex
+
+\begin{enumerate}
+
+\item En la arquitectura de FinCore, un desarrollador propone implementar el patrón \textbf{Microservice Chassis}. cual es el principal beneficio arquitectonico que se busca con esta decisión?
+
+Reducir el tiempo de comercialización y asegurar la consistencia transversal al \texttt{encapsular} como logs, seguridad y métricas en una plantilla reutilizable.
+
+\item al aplicar el patrón \textbf{Externalized configuration}, que impacto se genera directamente sobre los ASRs del sistema?
+
+Favorece la modificabilidad al permitir cambios de parámetros en tiempo de ejecución o arranque sin recompilar el artefacto, pero puede añadir un riesgo de seguridad si no se cifran los almacenes centralizados.
+
+\item un Message Broker con garantía de entrega 'At least once' duplica un mensaje debido a un fallo de confirmación de red. Si el consumidor implementa el patrón Idempotent Consumer utilizando Redis como almacén de IDs distribuidos, ¿qué acción toma el sistema?
+
+Verifica si el ID de mensaje ya existe en Redis; al encontrarlo, descarta el mensaje duplicado e impide la \texttt{re-ejecución} de la lógica de negocio.
+
+\item Considera la estrategia de despliegue 'Multiple Service Instances per Host'. ¿Cuál es su principal debilidad en un entorno de alta concurrencia como el de BITE.co?
+
+La falta de aislamiento de recursos, lo que permite que una sola instancia sature la CPU o memoria del host, degradando la disponibilidad de todos los demás servicios compartidos. \textbf{compartir el mismo espacio de sistema operativo significa que no hay limites estrictos de hardware por proceso, induciendo contención de recursos}
+
+\item En la estrategia de despliegue 'Service Instance per VM', ¿cuál es el trade-off directo en comparación con el uso de contenedores?
+
+Se maximiza el aislamiento de fallas y seguridad a nivel de hipervisor, pero a costa de un mayor consumo de recursos y tiempos de aprovisionamiento elevados. \textbf{cada VM arranca un SO completo, garantizando fronteras rigidas de hardware y red, pero penalizando el tamaño del artefacto y su velocidad de despliegue}
+
+\item El documento del Grupo 1 describe la estrategia 'Service Instance per Container'. ¿Por qué la seguridad se evalúa con una calificación media/baja (B) en su matriz de trade-offs?
+
+porque los contenedores comparten el mismo kernel del sistema operativo del host, lo que amplía la sueprficie de ataque si un proceso logra romper el aislamiento del espacio de nombres(namespace). \textbf{a diferencia de las VMs con kernels separados, una vulnerabilidad a nivel de kernel en el host puede comprometer potencialmente a todos los contenedores residentes}
+
+\item Bajo un esquema de 'Serverless Deployment' (ej. AWS Lambda), ¿cuál de las siguientes situaciones describe el fenómeno conocido como 'Cold Start'?
+
+La latencia adicional que ocurre cuando llega una petición y la plataforma debe aprovisionar un contenedor contenedor efímero, descargar el codigo e iniciar el entorno de ejecución desde cero. \textbf{al no haber servidores encendidos continuamente, la primera llamada sufre un retraso mientras la plataforma Serverless orquesta la infraestructura base}
+
+\item En el patrón de descubrimiento 'Client-side Discovery', ¿cuál es el rol exacto del cliente que desea invocar a otro servicio?
+
+Consultar activamente al service registry las ubicaciones de red disponibles, aplicar localmente un algoritmo de balanceo de carga y direccionar la petición directamente a la instancia seleccionada. \textbf{en el enfoque de cliente, la inteligencia de consulta de catalogo y la distribución del trafico reside en el proceso que origina la llamada}
+
+\item En un esquema de 'Server-side Discovery', ¿qué atributo de calidad se ve amenazado al introducir un enrutador intermedio (como un Balanceador de Carga)?
+
+La disponibilidad, puesto que el balanceador de carga centralizado se convierte en un punto único de falla, si no se configura con redundancia activa.
+
+\end{enumerate}
