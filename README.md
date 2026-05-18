@@ -1,1 +1,3 @@
 # Software-Architecture-and-Design-notes
+
+In this current repository are included notes about all about microservices patterns, databases and more...
